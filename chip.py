@@ -11,8 +11,7 @@ class NeuromorphicChip:
     def __init__(self):
         """
         Memory and energy parameters for the neuromorphic chip
-        DO NOT CHANGE THESE PARAMETERS. THESE ARE THE CONSTRAINTS YOU NEED TO WORK WITH.
-        Altough these are not realistic parameters, they are used to make sure you are optimizing the right things.
+        ⚡ DO NOT CHANGE THESE PARAMETERS. THESE ARE THE CONSTRAINTS YOU NEED TO WORK WITH ⚡
         """
         self.MAX_NEURONS = 1024
         self.MAX_SYNAPSES = self.MAX_NEURONS * 128
@@ -31,7 +30,8 @@ class NeuromorphicChip:
     def calculate_memory_usage(self, snn: SNNModel) -> int:
         """
         Calculate total memory usage for the given SNN
-        TODO: Implement this method, using the total number of neurons and synapses
+        TODO: Implement this method, using the total number of neurons and synapses of the SNN.
+        /!\ : You need to implement the properties n_neurons and n_synapses in the SNN class first.
 
         """
         raise NotImplementedError("Memory usage not implemented")
@@ -43,7 +43,6 @@ class NeuromorphicChip:
         TODO: Implement this method, using the total number of neurons and synapses
         """
         self.mapped_snn = snn
-        
         raise NotImplementedError("Mapping not implemented")
 
     def run(

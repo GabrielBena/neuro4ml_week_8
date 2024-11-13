@@ -68,9 +68,8 @@ class SNNModel(nn.Module):
     """
     A simplified Spiking Neural Network using snnTorch.
     You need to implement:
-    1. Network initialization with proper layers
-    2. Forward pass with spike recording
-    3. Connectivity mask application
+    1/ property n_neurons
+    2/ property n_synapses
     """
 
     def __init__(
@@ -93,6 +92,8 @@ class SNNModel(nn.Module):
             snn.Leaky(beta=beta, init_hidden=True, output=True),
         )
 
+        self.n_timesteps = 100
+
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Run network simulation for input x.
@@ -101,6 +102,10 @@ class SNNModel(nn.Module):
         Returns:
             tuple: (spike_recording, membrane_recording)
         """
+
+        assert x.shape[0] == self.n_timesteps, str(
+            f"Input tensor must have the correct number of time steps, shape is {x.shape} but should be batch x time x input_size"
+        )
         # Initialize hidden states
         utils.reset(self.layers)
 
@@ -134,22 +139,22 @@ class SNNModel(nn.Module):
         }
 
     @property
-    def n_synapses(self) -> int:
-        """
-        Calculate total number of active synapses in the network
-        Hint: Count non-zero weights in linear layers
-        Optional: Use weight masks to create sparse connectivity in the network, to reduce this number.
-        """
-        raise NotImplementedError("Number of synapses not implemented")
-
-
-    @property
     def n_neurons(self) -> int:
         """
         Calculate total number of neurons in the network
-        Hint: Use out_features of linear layers
+        Hint: Use out_features of linear layers or use the dimensions that we used in the initialization
         """
         raise NotImplementedError("Number of neurons not implemented")
+
+
+    @property
+    def n_synapses(self) -> int:
+        """
+        Calculate total number of active synapses in the network
+        Hint: Count non-zero weights in linear layers (access weights with layer.weight)
+        Optional: Use weight masks to create sparse connectivity in the network, to reduce this number !
+        """
+        raise NotImplementedError("Number of synapses not implemented")
 
     def __repr__(self):
         return f"SNNModel(n_neurons={self.n_neurons}, n_synapses={self.n_synapses})"
